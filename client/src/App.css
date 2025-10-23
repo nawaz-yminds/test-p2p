@@ -1,0 +1,42 @@
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.container h2 { margin-bottom: 0.5rem; }
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.actions .link {
+  width: 420px;
+}
+
+.error {
+  color: #b00020;
+  margin-bottom: 0.5rem;
+}
+
+.videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.pane { display: flex; flex-direction: column; }
+.label { font-size: 0.9rem; color: #666; margin-bottom: 0.25rem; }
+
+video {
+  width: 100%;
+  max-height: 60vh;
+  background: #111;
+  border-radius: 8px;
+}
+
+.status { margin-top: 0.5rem; color: #666; }
