@@ -7,7 +7,7 @@ Deploy the full app (client + signaling server) on one origin so the browser can
 - Node.js 18+ and npm
 - Nginx installed (`sudo apt install nginx`)
 - PM2 installed globally: `sudo npm i -g pm2`
-- Domain pointed (A/AAAA) to the server (e.g., p2p.example.com)
+- Domain pointed (A/AAAA) to the server (p2p.employability.ai)
 - Certbot for TLS: `sudo apt install certbot python3-certbot-nginx`
 
 ## 1) Get the code on the server
@@ -21,8 +21,10 @@ git clone <YOUR_REPO_URL> .
 ```
 cd client
 npm ci
-# IMPORTANT: For production, delete client/.env (or ensure VITE_SOCKET_URL matches your HTTPS domain).
+# IMPORTANT: For production, delete client/.env so the app uses same-origin WebSocket; or set VITE_SOCKET_URL to your HTTPS domain.
 rm -f .env
+# If you prefer to keep an env, build with:
+# VITE_SOCKET_URL=https://p2p.employability.ai npm run build
 npm run build
 
 cd ../server
@@ -40,12 +42,12 @@ pm2 startup  # follow the printed instruction once to enable on boot
 ```
 
 ## 4) Configure Nginx (reverse proxy)
-Create a site config, replacing DOMAIN with your domain.
+Create a site config for p2p.employability.ai.
 ```
 sudo tee /etc/nginx/sites-available/test-p2p >/dev/null <<'CONF'
 server {
   listen 80;
-  server_name DOMAIN;
+  server_name p2p.employability.ai;
 
   # WebSocket upgrade for Socket.IO
   location /socket.io/ {
@@ -75,12 +77,12 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ## 5) Enable HTTPS (required for mobile camera)
 ```
-sudo certbot --nginx -d DOMAIN
+sudo certbot --nginx -d p2p.employability.ai
 ```
 Certbot updates Nginx for HTTPS automatically.
 
 ## 6) Verify
-- Open https://DOMAIN on desktop → click "Start Webcam"
+- Open https://p2p.employability.ai on desktop → click "Start Webcam"
 - Copy the share URL and open it on the phone → allow camera → remote feed appears on desktop (right pane)
 
 ## 7) Deploy updates

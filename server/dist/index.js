@@ -3,7 +3,11 @@ import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
+const HOST = process.env.HOST || '127.0.0.1';
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const app = express();
 // CORS for dev; in prod we serve same origin
@@ -52,7 +56,7 @@ if (NODE_ENV === 'production') {
         res.sendFile(path.join(clientDist, 'index.html'));
     });
 }
-server.listen(PORT, () => {
-    console.log(`[server] listening on http://localhost:${PORT} (${NODE_ENV})`);
+server.listen(PORT, HOST, () => {
+    console.log(`[server] listening on http://${HOST}:${PORT} (${NODE_ENV})`);
 });
 //# sourceMappingURL=index.js.map
